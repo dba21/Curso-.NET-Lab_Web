@@ -25,15 +25,7 @@ Console.WriteLine(p1.Gety());
 
 */
 
-/*
-Point p1 = new Point(1,1);
 
-Point p2 = new Point(4,4);
-
-double distance = p1.DistanceTo(p2);
-
-Console.WriteLine(p1.DistanceTo(p2));
-*/
 //inicia o Triangulo
 Point p1 = new Point(1, 1); //invocação do objeto chamado p
 
