@@ -1,6 +1,5 @@
 {
-  "Employee": [
-    {
+    
       "UserId": "krish",
       "JobTitle": "Developer",
       "FirstName": "Krish",
@@ -9,6 +8,5 @@
       "Region": "CA",
       "PhoneNumber": "123456",
       "EmailAddress": "krish.lee@learningcontainer.com"
-    }
-  ]
+    
 }

@@ -2,6 +2,14 @@
 {
     public class Employees
     {
-        public List<Employee> Employees { get; set;}
+
+        //criar construtor por omição, para chamar da class object
+        public Employees()
+        {
+            EmployeesList = new List<Employee>();
+        }
+
+
+        public List<Employee> EmployeesList { get; set;}
     }
 }
