@@ -6,7 +6,7 @@ Employees employees = loadEmployeesJson();
 //função para ler o ficheiro employee.json desserializar o objeto, criar uma nova instância do tipo Employee que é e1, e devolvê-la
 Employee e1 = new Employee()
 { //atribuir construtores e propriedades
-    UserId = " 1",
+    UserId = 4,
     JobTitle = "Teacher",
     FirstName = "Tiago",
     LastName =  "Nunes",
@@ -19,7 +19,7 @@ Employee e1 = new Employee()
 
 Employee e2 = new Employee
 {
-    UserId = " 2",
+    UserId = 5,
     JobTitle = "Student",
     FirstName = "Marta",
     LastName = "Abreu",
@@ -32,7 +32,7 @@ Employee e2 = new Employee
 
 Employee e3 = new Employee
 {
-    UserId = " 3",
+    UserId = 6,
     JobTitle = "Driver",
     FirstName = "Ricardo",
     LastName = "Vieira",
@@ -43,7 +43,7 @@ Employee e3 = new Employee
 
 };
 
-//Construtor da class object
+//instacianr nova variavel Construtor da class object
 Employees es = new Employees();
 
 es.EmployeesList.Add(e1);
@@ -57,12 +57,9 @@ File.WriteAllText("testEmployees.json", jsonS);
 
 
 
-
 //Serializar é Instancias para json
 //desserializar é json para Instancias
 //Employee é a class, e1 é instancia, new Employee(); é o construtor
-
-
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -75,29 +72,53 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
-
-
-app.MapGet("/employee", () =>
-{
-   if (employee != null)
-    {
-        return Results.NotFound("Not Found");
-    }
-   else
-        return Results.Ok(employee);
-});
-
 app.MapGet("/employees", () =>
 {
-    if (employees != null)
+    if (employees == null)
     {
         return Results.NotFound("Not Found");
     }
     else
-        return Results.Ok(employees);
+        return Results.Ok(employees.EmployeesList);
 });
 
-app.Run();
+app.MapGet("/employees/{id}", (int id) =>
+{
+    Employee e = employees.EmployeesList.Find (e => e.UserId == id);
+    /*
+    Employee emp = null;
+    for (int i = 0; i < employees.EmployeesList.Count; i++)
+    {
+        Employee e = employees.EmployeesList[i];
+        if (emp.UserId == id)
+        {
+            e = emp;
+        }
+      
+    }*/
+
+    if (e == null)
+    {
+        return Results.NotFound("Id not Found");
+    }
+    return Results.Ok(e);
+});
+
+/* ou
+app.MapGet("/employees", () =>
+{
+        return Results.Ok(employees.EmployeesList);
+});*/
+
+
+/*
+app.MapPost("/employees", (Employees es) =>
+{
+    es.EmployeesList.Add(e1);
+    return Results.Ok(es);
+});
+
+*/
 
 Employee loadEmployeeJson()
 {
@@ -112,3 +133,5 @@ Employees loadEmployeesJson()
     Employees es = JsonSerializer.Deserialize<Employees>(jsonData);
     return es;
 }
+
+app.Run();

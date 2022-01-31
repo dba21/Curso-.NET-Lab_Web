@@ -1,6 +1,5 @@
 {
-    
-      "UserId": "krish",
+      "UserId": 1,
       "JobTitle": "Developer",
       "FirstName": "Krish",
       "LastName": "Lee",
@@ -8,5 +7,4 @@
       "Region": "CA",
       "PhoneNumber": "123456",
       "EmailAddress": "krish.lee@learningcontainer.com"
-    
 }
