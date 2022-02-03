@@ -84,7 +84,7 @@ app.MapGet("/employees", () =>
 
 app.MapGet("/employees/{id}", (int id) =>
 {
-    Employee e = employees.EmployeesList.Find (e => e.UserId == id);
+    Employee e = employees.EmployeesList.Find (e => e.UserId == id); //=> é um deleget
     /*
     Employee emp = null;
     for (int i = 0; i < employees.EmployeesList.Count; i++)
@@ -119,6 +119,42 @@ app.MapPost("/employees", (Employees es) =>
 });
 
 */
+
+app.MapDelete("/employees/{id}", (int id) =>
+{
+    int removed = employees.EmployeesList.RemoveAll(e1 => e1.UserId == id);
+
+    if (removed == 0)
+    {
+        return Results.NotFound(string.Format("Id: {0} not found", id));
+
+    }
+    else
+    {
+        return Results.Ok(removed);
+    }
+
+});
+
+app.MapPost("/employees", (Employee employee) =>
+{
+    //var firstEmp = employees.EmployeesList.FirstOrDefault();
+
+    if (employees.EmployeesList.Count == 0)
+    {
+        employee.UserId = 1; //esta linha esta a definir 
+        employees.EmployeesList.Add(employee);
+        
+    }
+    else
+    {
+        var lastEmp = employees.EmployeesList[employees.EmployeesList.Count - 1];  //ir a lista e selecionar o ultimo funcionario
+        //var lastEmp = employees.EmployeesList.LastOrDefault(); 
+        employee.UserId = lastEmp.UserId + 1;
+        employees.EmployeesList.Add(employee); //guarda o funcionario ad na lista
+    }
+    return Results.Ok(employee);
+});
 
 Employee loadEmployeeJson()
 {
