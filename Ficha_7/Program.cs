@@ -84,7 +84,7 @@ app.MapGet("/employees", () =>
 
 app.MapGet("/employees/{id}", (int id) =>
 {
-    Employee e = employees.EmployeesList.Find (e => e.UserId == id); //=> é um deleget
+    Employee e = employees.EmployeesList.Find (e => e.UserId == id); //=> delegar
     /*
     Employee emp = null;
     for (int i = 0; i < employees.EmployeesList.Count; i++)
@@ -156,6 +156,26 @@ app.MapPost("/employees", (Employee employee) =>
     return Results.Ok(employee);
 });
 
+app.MapPut("/emploees/{id}", (int id, Employee inpEmploee) =>
+{
+    Employee es = employees.EmployeesList.Find(es => es.UserId == id);
+    if (es == null)
+    {
+        return Results.NotFound($"ID : {id} not found!");
+    }
+    else
+    {
+        es.JobTitle = inpEmploee.JobTitle;
+        es.FirstName = inpEmploee.FirstName;
+        es.LastName = inpEmploee.LastName;
+        es.EmployeeCode = inpEmploee.EmployeeCode;
+        es.Region = inpEmploee.Region;
+        es.PhoneNumber = inpEmploee.PhoneNumber;
+        es.EmailAddress = inpEmploee.EmailAddress;
+        return Results.Ok(es);
+    }
+});
+
 Employee loadEmployeeJson()
 {
     var jsonData = File.ReadAllText("employee.json");
@@ -171,3 +191,4 @@ Employees loadEmployeesJson()
 }
 
 app.Run();
+
