@@ -45,7 +45,7 @@ app.MapPost("/people", (Person person) => //adicionar pessoa a lista
 {
 
     people.PersonList.Add(person);
-    return Results.Ok(person);
+    return Results.Created("/people",person);
 
 });
 

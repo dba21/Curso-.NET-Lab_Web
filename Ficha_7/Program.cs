@@ -82,7 +82,8 @@ app.MapGet("/employees", () =>
         return Results.Ok(employees.EmployeesList);
 });
 
-app.MapGet("/employees/{id}", (int id) =>
+
+app.MapGet("/employees/{id:int}", (int id) =>
 {
     Employee e = employees.EmployeesList.Find (e => e.UserId == id); //=> delegar
     /*
@@ -153,27 +154,45 @@ app.MapPost("/employees", (Employee employee) =>
         employee.UserId = lastEmp.UserId + 1;
         employees.EmployeesList.Add(employee); //guarda o funcionario ad na lista
     }
-    return Results.Ok(employee);
+    return Results.Created("/employees", employee);
 });
 
-app.MapPut("/emploees/{id}", (int id, Employee inpEmploee) =>
+app.MapPut("/employees/{id}", (int id, Employee employee) =>
 {
-    Employee es = employees.EmployeesList.Find(es => es.UserId == id);
+    var emp = employees.EmployeesList.Find(es => es.UserId == id);
     if (es == null)
     {
         return Results.NotFound($"ID : {id} not found!");
     }
     else
     {
-        es.JobTitle = inpEmploee.JobTitle;
-        es.FirstName = inpEmploee.FirstName;
-        es.LastName = inpEmploee.LastName;
-        es.EmployeeCode = inpEmploee.EmployeeCode;
-        es.Region = inpEmploee.Region;
-        es.PhoneNumber = inpEmploee.PhoneNumber;
-        es.EmailAddress = inpEmploee.EmailAddress;
-        return Results.Ok(es);
+        emp.JobTitle = employee.JobTitle;
+        emp.FirstName = employee.FirstName;
+        emp.LastName = employee.LastName;
+        emp.EmployeeCode = employee.EmployeeCode;
+        emp.Region = employee.Region;
+        emp.PhoneNumber = employee.PhoneNumber;
+        emp.EmailAddress = employee.EmailAddress;
+        return Results.Ok(emp);
     }
+});
+
+app.MapGet("/employees/{Region}", (string region) =>
+{
+    List<Employee> emps = employees.EmployeesList.FindAll(e => e.Region == region);
+
+    if (emps.Count == 0)
+    {
+        return Results.NotFound("Id not Found");
+    }
+    else
+        return Results.Ok(emps);
+});
+
+app.MapGet("/employees/download", () =>
+{
+    byte[] byteArray = File.ReadAllBytes("employees.json");
+        return Results.File(byteArray, null, "employees.json");
 });
 
 Employee loadEmployeeJson()
