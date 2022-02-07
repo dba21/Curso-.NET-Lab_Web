@@ -1,5 +1,20 @@
 using Ficha_7;
 using System.Text.Json;
+
+Employee loadEmployeeJson()
+{
+    var jsonData = File.ReadAllText("employee.json");
+    Employee e = JsonSerializer.Deserialize<Employee>(jsonData);
+    return e;
+}
+
+Employees loadEmployeesJson()
+{
+    var jsonData = File.ReadAllText("employees.json");
+    Employees es = JsonSerializer.Deserialize<Employees>(jsonData);
+    return es;
+}
+
 Employee employee = loadEmployeeJson();
 Employees employees = loadEmployeesJson();
 
@@ -51,16 +66,14 @@ es.EmployeesList.Add(e2);
 es.EmployeesList.Add(e3);
 
 string json = JsonSerializer.Serialize<Employee>(e1);
-string jsonS = JsonSerializer.Serialize<Employees>(es);
 File.WriteAllText("test.json", json);
+
+string jsonS = JsonSerializer.Serialize<Employees>(es);
 File.WriteAllText("testEmployees.json", jsonS);
-
-
 
 //Serializar é Instancias para json
 //desserializar é json para Instancias
 //Employee é a class, e1 é instancia, new Employee(); é o construtor
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,6 +85,7 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
+//Mostra toda lista dos Funcionarios
 app.MapGet("/employees", () =>
 {
     if (employees == null)
@@ -82,7 +96,7 @@ app.MapGet("/employees", () =>
         return Results.Ok(employees.EmployeesList);
 });
 
-
+//Mostra os dados de um funcionario
 app.MapGet("/employees/{id:int}", (int id) =>
 {
     Employee e = employees.EmployeesList.Find (e => e.UserId == id); //=> delegar
@@ -121,6 +135,7 @@ app.MapPost("/employees", (Employees es) =>
 
 */
 
+//Remove os dados de um funcionario
 app.MapDelete("/employees/{id}", (int id) =>
 {
     int removed = employees.EmployeesList.RemoveAll(e1 => e1.UserId == id);
@@ -137,6 +152,7 @@ app.MapDelete("/employees/{id}", (int id) =>
 
 });
 
+//Adicionar um novo funcionario a lista
 app.MapPost("/employees", (Employee employee) =>
 {
     //var firstEmp = employees.EmployeesList.FirstOrDefault();
@@ -157,6 +173,7 @@ app.MapPost("/employees", (Employee employee) =>
     return Results.Created("/employees", employee);
 });
 
+//Alterar os dados de um funcionario
 app.MapPut("/employees/{id}", (int id, Employee employee) =>
 {
     var emp = employees.EmployeesList.Find(es => es.UserId == id);
@@ -177,11 +194,12 @@ app.MapPut("/employees/{id}", (int id, Employee employee) =>
     }
 });
 
+//Mostra os dados dos funcionarios por região
 app.MapGet("/employees/{Region}", (string region) =>
 {
     List<Employee> emps = employees.EmployeesList.FindAll(e => e.Region == region);
 
-    if (emps.Count == 0)
+    if (emps.Count == 0) //Se a região não for encontrata mostra return em [] (da lista vazia)
     {
         return Results.NotFound("Id not Found");
     }
@@ -189,25 +207,24 @@ app.MapGet("/employees/{Region}", (string region) =>
         return Results.Ok(emps);
 });
 
+//Fazer o download da lista de funcionarios do ficheiro JSON
 app.MapGet("/employees/download", () =>
 {
-    byte[] byteArray = File.ReadAllBytes("employees.json");
+    //Guardar a lista atual de funcionarios num ficheiro
+    string jsonS = JsonSerializer.Serialize<Employees>(es);
+    File.WriteAllText("testEmployees.json", jsonS);
+
+    try
+    {
+        byte[] byteArray = File.ReadAllBytes("employees.json");
         return Results.File(byteArray, null, "employees.json");
+    }
+    catch(FileNotFoundException e)
+    {
+        return Results.NotFound(e.Message);
+    }
 });
 
-Employee loadEmployeeJson()
-{
-    var jsonData = File.ReadAllText("employee.json");
-    Employee e = JsonSerializer.Deserialize<Employee>(jsonData);
-    return e;
-}
-
-Employees loadEmployeesJson()
-{
-    var jsonData = File.ReadAllText("employees.json");
-    Employees es = JsonSerializer.Deserialize<Employees>(jsonData);
-    return es;
-}
 
 app.Run();
 
