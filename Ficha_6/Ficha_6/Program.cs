@@ -1,14 +1,34 @@
 using Ficha_6;
 using System.Text.Json;
-People people = loadJsonData(); //invocar o metodo
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+
+People loadJsonData()
+{
+    var jsonData = File.ReadAllText("data.json");
+    People p = JsonSerializer.Deserialize<People>(jsonData);
+    return p; //p instancia da class People
+}
+
+People people = loadJsonData(); //invocar o metodo
 
 // Add services to the container.
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
 
@@ -84,9 +104,3 @@ app.MapPut("/people/{ID}", (int id , Person person) =>  //alterar dados de uma p
 
 app.Run();
 
-People loadJsonData()
-{
-    var jsonData = File.ReadAllText("data.json");
-    People p = JsonSerializer.Deserialize<People>(jsonData);
-    return p; //p instancia da class People
-}
