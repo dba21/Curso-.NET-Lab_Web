@@ -176,8 +176,8 @@ app.MapPost("/employees", (Employee employee) =>
 //Alterar os dados de um funcionario
 app.MapPut("/employees/{id}", (int id, Employee employee) =>
 {
-    var emp = employees.EmployeesList.Find(es => es.UserId == id);
-    if (es == null)
+    var emp = employees.EmployeesList.Find(e => e.UserId == id);
+    if (emp == null)
     {
         return Results.NotFound($"ID : {id} not found!");
     }
