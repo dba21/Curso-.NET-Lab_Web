@@ -23,7 +23,6 @@ People people = loadJsonData(); //invocar o metodo
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -45,27 +44,11 @@ app.MapGet("/people", () => //people nome da rota, é a lista de pessoas
 
 });
 
-app.MapGet("/people/{ID}", (int id) => //people nome da rota, é a lista de pessoas
-{
-    
-    for  (int i = 0; i < people.PersonList.Count; i++)
-    {
-        Person person = people.PersonList[i];
-        if (person.ID == id)
-        {
-            return Results.Ok(person);
-        }
-    }
-
-    return Results.NotFound($"ID: {id} not found!");
-});
-
-
 app.MapPost("/people", (Person person) => //adicionar pessoa a lista
 {
 
     people.PersonList.Add(person);
-    return Results.Created("/people",person);
+    return Results.Created("/people", person);
 
 });
 
@@ -85,6 +68,22 @@ app.MapDelete("/people/{ID}", (int id) => //remover pessoa da lista, usando o fo
 
     return Results.NotFound($"ID: {id} not found!");
 });
+
+app.MapGet("/people/{ID}", (int id) => //people nome da rota, é a lista de pessoas
+{
+    
+    for  (int i = 0; i < people.PersonList.Count; i++)
+    {
+        Person person = people.PersonList[i];
+        if (person.ID == id)
+        {
+            return Results.Ok(person);
+        }
+    }
+
+    return Results.NotFound($"ID: {id} not found!");
+});
+
 
 app.MapPut("/people/{ID}", (int id , Person person) =>  //alterar dados de uma pessoa // ? significa nullable, develve nulo n exite
 {

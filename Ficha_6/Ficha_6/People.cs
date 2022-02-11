@@ -2,7 +2,7 @@
 {
     public class People
     {
-        public List<Person> PersonList { get; set;}
+        public List<Person> PersonList
 
     }
 }
