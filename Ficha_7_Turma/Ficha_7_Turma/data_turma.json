@@ -1,0 +1,31 @@
+{
+  "Turma_List": [
+    {
+      "AlunoId": 1,
+      "Turma": "A",
+      "Nome": "Tiago",
+      "Apelido": "Reis",
+      "Morada": "Sintra",
+      "Telemovel": "923600000",
+      "Email": "t.reis@uma.pt"
+    },
+    {
+      "AlunoId": 2,
+      "Turma": "A",
+      "Nome": "Marta",
+      "Apelido": "Beja",
+      "Morada": "Seia",
+      "Telemovel": "960333111",
+      "Email": "m.beja@uma.pt"
+    },
+    {
+      "AlunoId": 3,
+      "Turma": "C",
+      "Nome": "Rui",
+      "Apelido": "Melin",
+      "Morada": "Faro",
+      "Telemovel": "913666444",
+      "Email": "r.melin@uma.pt"
+    }
+  ]
+}
