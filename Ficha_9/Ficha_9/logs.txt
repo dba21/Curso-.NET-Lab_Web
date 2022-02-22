@@ -1,0 +1,10 @@
+Before: /, GET, 22/02/2022 09:45:25After: /, GET, 22/02/2022 09:45:25Before: /, GET, 22/02/2022 09:56:02After: /, GET, 22/02/2022 09:56:02Before: /, GET, 22/02/2022 10:06:09
+After: /, GET, 22/02/2022 10:06:09
+Before: /, DELETE, 22/02/2022 10:13:31
+After: /, DELETE, 22/02/2022 10:13:31
+Before: /, GET, 22/02/2022 10:14:03
+After: /, GET, 22/02/2022 10:14:03
+Before: /favicon.ico, GET, 22/02/2022 10:14:03
+After: /favicon.ico, GET, 22/02/2022 10:14:03
+Before: /Delete, GET, 22/02/2022 10:14:09
+After: /Delete, GET, 22/02/2022 10:14:09
