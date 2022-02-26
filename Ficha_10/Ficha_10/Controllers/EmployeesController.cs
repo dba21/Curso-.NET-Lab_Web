@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace Ficha_10.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class EmployeesController : ControllerBase
     {
@@ -28,7 +28,7 @@ namespace Ficha_10.Controllers
         }
 
 
-        // GET api/<ValuesController>/5
+        // GET Id api/<ValuesController>/5
         [HttpGet("{id:int}", Name = "GetById")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Employee))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -47,7 +47,7 @@ namespace Ficha_10.Controllers
         /*
         // POST api/<ValuesController>
         [HttpPost]
-        [Consumes(MediaTypeNames.Application.Json)]
+        [Consumes(MediaTypeResult.Application.Json)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
@@ -64,9 +64,10 @@ namespace Ficha_10.Controllers
                 employee.UserId = lastEmp.UserId + 1;
                 employees.EmployeesL.Add(employee);
             }
-            return ("./JsonFiles/employees.json", employee);
+            return Created("./JsonFiles/employees.json", employee);
         }
         */
+        
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -77,7 +78,7 @@ namespace Ficha_10.Controllers
             var emp = employees.EmployeesL.Find(e => e.UserId == id);
             if (emp == null)
             {
-                return NotFound($"Id: {id} not found!");
+                return NotFound(String.Format("Id: {0} not found!", id));
             }
             else
             {
@@ -91,7 +92,7 @@ namespace Ficha_10.Controllers
                 return Ok(emp);
             }
         }
-
+        
         // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -105,15 +106,34 @@ namespace Ficha_10.Controllers
             }
             else
             {
-                return Ok(removed);
+                return Ok(String.Format("Employee with ID: {0} was deleted.", id));
             }
         }
-        /*
+        
+        //Get Region
+        [HttpGet("{region}", Name = "GetByRegion")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Employee))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetByRegion(string region)
+        {
+            List<Employee>? emp = employees.EmployeesL.FindAll(e => e.Region == region);
+            if (emp.Count == 0)
+            {
+                return NotFound(String.Format("Region: {0} not found.", region));
+            }
+            else
+            {
+                return Ok(emp);
+            }
+        }
+        
+
+        
         //Download
-        [HttpGet("{id}")]
+        [HttpGet("{download}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Download(int id)
+        public IActionResult Download()
         {
             string json = JsonSerializer.Serialize<Employees>(employees);
             //namespace.class.function
@@ -121,8 +141,8 @@ namespace Ficha_10.Controllers
 
             try
             {
-                byte[] byteArray = System.IO.File.ReadAllBytes("./JsonFiles/employees.json");
-                return File(byteArray, null, "./JsonFiles/employees.json");
+                byte[] bytes = System.IO.File.ReadAllBytes("./JsonFiles/employees.json");
+                return File(bytes, null, "./JsonFiles/employees.json");
 
             }
             catch(FileNotFoundException e)
@@ -130,7 +150,7 @@ namespace Ficha_10.Controllers
                 return NotFound(e.Message);
             }
 
-            //File um metodo,(FileContentResolt) Assinatura dos metodos é sempre a devolver Nome e Argumentos
-        }*/
+        }
+        
     }
 }
