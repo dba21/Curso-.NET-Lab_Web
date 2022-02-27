@@ -6,7 +6,7 @@ namespace Ficha_10
     public class JsonLoader
     {
 
-        public static Employees loadEmploeesJson()
+        public static Employees LoadEmploeesJson()
         {
             var jsonData = File.ReadAllText("./JsonFiles/employees.json");
             Employees es = JsonSerializer.Deserialize<Employees>(jsonData);
@@ -17,13 +17,14 @@ namespace Ficha_10
 
         }
 
-
-
-        public static Characters loadCharactersJson()
+        public static Characters LoadCharactersJson()
         {
-            string jsonC = File.ReadAllText("characters.json");
-            var characters = JsonSerializer.Deserialize<Characters>(jsonC);
-            return characters;
+            string jsonC = File.ReadAllText("./JsonFiles/characters.json");
+            var cs = JsonSerializer.Deserialize<Characters>(jsonC);
+            return cs;
+
+            string json = JsonSerializer.Serialize<Characters>(cs);
+            File.WriteAllText("./JsonFiles/characters.json", json);
         }
     }
 }

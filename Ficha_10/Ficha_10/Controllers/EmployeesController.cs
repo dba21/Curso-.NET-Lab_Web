@@ -14,7 +14,7 @@ namespace Ficha_10.Controllers
 
         public EmployeesController()
         {
-            employees = JsonLoader.loadEmploeesJson();
+            employees = JsonLoader.LoadEmploeesJson();
         }
 
 
@@ -128,7 +128,6 @@ namespace Ficha_10.Controllers
         }
         
 
-        
         //Download
         [HttpGet("{download}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
