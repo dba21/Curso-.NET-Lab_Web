@@ -9,7 +9,7 @@ namespace Ficha_10
         public static Employees LoadEmploeesJson()
         {
             var jsonData = File.ReadAllText("./JsonFiles/employees.json");
-            Employees es = JsonSerializer.Deserialize<Employees>(jsonData);
+            Employees? es = JsonSerializer.Deserialize<Employees>(jsonData);
             return es;
 
             string json = JsonSerializer.Serialize<Employees>(es);
@@ -19,8 +19,8 @@ namespace Ficha_10
 
         public static Characters LoadCharactersJson()
         {
-            string jsonC = File.ReadAllText("./JsonFiles/characters.json");
-            var cs = JsonSerializer.Deserialize<Characters>(jsonC);
+            var jsonC = File.ReadAllText("./JsonFiles/characters.json");
+            Characters? cs = JsonSerializer.Deserialize<Characters>(jsonC);
             return cs;
 
             string json = JsonSerializer.Serialize<Characters>(cs);

@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace Ficha_10.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class CharactersController : Controller
     {
@@ -125,15 +125,15 @@ namespace Ficha_10.Controllers
 
 
         //Get Jedi
-        [HttpGet("{jedi}", Name = "GetByJedi")]
+        [HttpGet("/jedi", Name = "GetByJedi")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Character))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetByJedi(bool jedi)
+        public IActionResult GetByJedi()
         {
-            List<Character>? c = characters.CharactersL.FindAll(p => p.Jedi == jedi);
+            List<Character>? c = characters.CharactersL.FindAll(p => p.Jedi == true);
             if (c.Count == 0)
             {
-                return NotFound(String.Format("Jedi: {0} not found.", jedi));
+                return NotFound(String.Format("Jedi: not found."));
             }
             else
             {
@@ -143,19 +143,19 @@ namespace Ficha_10.Controllers
 
 
         //Download
-        [HttpGet("{download}")]
+        [HttpGet("download", Name = "GetDownload")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Download()
+        public IActionResult GetDownload()
         {
-            string json = JsonSerializer.Serialize<Characters>(characters);
+            string jsonCha = JsonSerializer.Serialize<Characters>(characters);
             //namespace.class.function
-            System.IO.File.WriteAllText("./JsonFiles/characters.json", json);
+            System.IO.File.WriteAllText("./JsonFiles/characters.json", jsonCha);
 
             try
             {
                 byte[] bytes = System.IO.File.ReadAllBytes("./JsonFiles/characters.json");
-                return File(bytes, null, "./JsonFiles/characters.json");
+                return File(bytes, "aolication/json", "./JsonFiles/characters.json");
 
             }
             catch (FileNotFoundException e)
