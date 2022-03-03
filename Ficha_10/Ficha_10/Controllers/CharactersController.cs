@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Ficha_10.Models;
 using System.Text.Json;
+using System.Net.Mime;
 
 namespace Ficha_10.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class CharactersController : Controller
     {
@@ -23,10 +24,10 @@ namespace Ficha_10.Controllers
             return characters.CharactersL;
         }
 
-        /*
+        
         // POST api/<ValuesController>
         [HttpPost]
-        [Consumes(MediaTypeResult.Application.Json)]
+        [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
@@ -45,10 +46,10 @@ namespace Ficha_10.Controllers
             }
             return Created("./JsonFiles/characters.json", c);
         }
-        */
+        
 
         // GET: CharactersController/Delete/5
-        [HttpDelete("{id}")]
+        [HttpDelete("id")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Delete(int id)
@@ -107,7 +108,7 @@ namespace Ficha_10.Controllers
         }
 
         //Get Gender
-        [HttpGet("{gender}", Name = "GetByGender")]
+        [HttpGet("gender/{gender}", Name = "GetByGender")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Character))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetByGender(string gender)
@@ -125,7 +126,7 @@ namespace Ficha_10.Controllers
 
 
         //Get Jedi
-        [HttpGet("/jedi", Name = "GetByJedi")]
+        [HttpGet("jedi", Name = "GetByJedi")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Character))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetByJedi()

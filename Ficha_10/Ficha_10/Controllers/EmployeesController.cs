@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace Ficha_10.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class EmployeesController : ControllerBase
     {
