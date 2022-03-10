@@ -8,11 +8,15 @@ namespace Ficha_11
 {
     public class VehicleTest
     {
-        private int Car;
+        private IVehicle vehicle;
 
-        public VehicleTest()
+        public IVehicle Vehicle { get { return vehicle; } }
+        public VehicleTest(IVehicle vehicle)
         {
-            this.Car = 0;
+            this.vehicle = vehicle;
         }
+
+
+
     }
 }

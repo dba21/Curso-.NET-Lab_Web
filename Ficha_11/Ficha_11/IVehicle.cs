@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Ficha_11
 {
-    internal class Travel
+    public interface IVehicle
     {
+        public Drive()
+        {
 
+        }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ficha_11
 {
-    public class Motorcycle
+    public class Motorcycle : Vehicle
     {
         public enum Models
         {
@@ -15,7 +15,7 @@ namespace Ficha_11
             ADVENTURE,
         }
 
-        public int topSpeed;
+        protected int topSpeed;
 
         public Motorcycle(int topSpeed)
         {

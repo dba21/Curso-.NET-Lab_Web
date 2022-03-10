@@ -6,26 +6,31 @@ using System.Threading.Tasks;
 
 namespace Ficha_11
 {
-    public abstract class Vehicle
+   
+    public abstract class Vehicle : IVehicle
     {
-        //private Travel travel;
-
         public enum Travel
-            {
-                LAND,
-                Water,
-                AIR,
-            }
+        {
+            LAND,
+            Water,
+            AIR,
+        }
 
-        public string color;
-        public int weight;
-        public string brand;
-        public string model;
-        Engine engine;
+        protected Travel travel;
+        protected string color;
+        protected int weight;
+        protected string brand;
+        protected string model;
+        protected Engine engine;
+
+        public Vehicle(Travel travel, string color, int weight, string brand, string model, Engine engine)
+        {
+
+        }
 
         public override string ToString()
         {
-            return "Brand: " + brand;
+            return "Brand: " + brand + engine.ToString() + "Travel: " + travel;
             
         }
         public abstract void Start();

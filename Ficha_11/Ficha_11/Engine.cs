@@ -21,7 +21,7 @@ namespace Ficha_11
 
         public override string ToString()
         {
-            return "HP: " + horsepower;
+            return "Torque:" + torque + "Displacement: " + displacement + "HP: " + horsepower;
         }
     }
 

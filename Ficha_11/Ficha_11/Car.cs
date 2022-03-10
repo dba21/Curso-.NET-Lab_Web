@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Ficha_11
 {
-    public class Car
+    public class Car : Vehicle
     {
         private int doors;
         private int seats;
 
-        
         public Car()
         {
             this.doors = 0;
@@ -33,5 +32,6 @@ namespace Ficha_11
             return str;
         }
 
+        public abstract void Start();
     }
 }
