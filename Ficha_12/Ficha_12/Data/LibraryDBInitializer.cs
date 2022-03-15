@@ -22,6 +22,8 @@ namespace Ficha_12.Data
                 Pages = 1216,
                 Publisher = publisher
             });
+
+            context.SaveChanges();
         }
     }
 }

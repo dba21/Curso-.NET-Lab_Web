@@ -1,20 +1,23 @@
 ﻿using Ficha_12.Models;
 using Ficha_12.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Ficha_12.Controllers
 {
-    public class BooksController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class BooksController : ControllerBase
     {
         private readonly IBookService service;
 
-        // GET: BooksController
-        public ActionResult Index()
+        public BooksController(IBookService service)
         {
-            return View();
+            this.service = service;
         }
 
+        // GET: api/<BooksController>
         [HttpGet]
         public IEnumerable<Book> Get()
         {
@@ -22,73 +25,37 @@ namespace Ficha_12.Controllers
         }
 
 
-        // GET: BooksController/Details/5
-        public ActionResult Details(int id)
+        // GET api/<BooksController>/5
+        [HttpGet("{isbn}", Name = "GetByISBN")]
+        public IActionResult Get(string isbn)
         {
-            return View();
+            Book? book = service.GetByISBN(isbn);
+            if(book == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(book);
+            }
         }
 
-        // GET: BooksController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: BooksController/Create
+        // POST api/<BooksController>
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public void Post([FromBody] string value)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
 
-        // GET: BooksController/Edit/5
-        public ActionResult Edit(int id)
+        // PUT api/<BooksController>/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
         {
-            return View();
         }
 
-        // POST: BooksController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        // DELETE api/<BooksController>/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: BooksController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: BooksController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }
