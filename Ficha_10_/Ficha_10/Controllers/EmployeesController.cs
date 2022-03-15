@@ -33,7 +33,7 @@ namespace Ficha_10.Controllers
             
         }
 
-        /*
+        
         // GET Id api/<ValuesController>/5
         [HttpGet("{id:int}", Name = "GetById")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Employee))]
@@ -72,7 +72,7 @@ namespace Ficha_10.Controllers
             }
             return Created("./JsonFiles/employees.json", employee);
         }
-        
+
         
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]
@@ -132,15 +132,15 @@ namespace Ficha_10.Controllers
                 return Ok(emp);
             }
         }
-        
 
+        
         //Download
         [HttpGet("download", Name = "GetByDownload")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetByDownload()
         {
-            string jsonEmp = JsonSerializer.Serialize<Employees>(employees);
+            string jsonEmp = JsonSerializer.Serialize<Employee>((Employee)employees);
             //namespace.class.function
             System.IO.File.WriteAllText("./JsonFiles/employees.json", jsonEmp);
             
@@ -156,6 +156,6 @@ namespace Ficha_10.Controllers
             }
 
         }
-        */
+        
     }
 }
