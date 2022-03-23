@@ -6,15 +6,16 @@ using System.Net.Mime;
 
 namespace Ficha_10.Controllers
 {
-    [Route("[controller]")]
     [ApiController]
-    public class CharactersController : Controller
+    [Route("[controller]")]
+    
+    public class CharactersController : ControllerBase
     {
-        private readonly Characters characters;
+        private readonly ICharacters characters;
 
-        public CharactersController()
+        public CharactersController(ICharacters characters)
         {
-            characters = JsonLoader.LoadCharactersJson();
+            this.characters = characters;
         }
 
         // GET: CharactersController
@@ -26,25 +27,22 @@ namespace Ficha_10.Controllers
 
         
         // POST api/<ValuesController>
-        [HttpPost]
+        [HttpPost(Name = "PostCharacter")]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
-        public IActionResult Post([FromBody] Character c)
+        public IActionResult Post([FromBody] Character character)
         {
-            if (characters.CharactersL.Count == 0)
+            if (character != null)
             {
-                c.Id = 1;
-                characters.CharactersL.Add(c);
+                characters.CharactersL.Add(character);
+                return CreatedAtRoute("GetById", new {id = character.Id }, character);
             }
             else
             {
-                var personagem = characters.CharactersL[characters.CharactersL.Count - 1];
-                c.Id = personagem.Id + 1;
-                characters.CharactersL.Add(c);
+                return BadRequest(); 
             }
-            return Created("./JsonFiles/characters.json", c);
         }
         
 
@@ -54,6 +52,8 @@ namespace Ficha_10.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Delete(int id)
         {
+            return Ok();
+            /*
             int removed = characters.CharactersL.RemoveAll(e => e.Id == id);
             if (removed == 0)
             {
@@ -62,19 +62,19 @@ namespace Ficha_10.Controllers
             else
             {
                 return Ok(String.Format("Employee with ID: {0} was deleted.", id));
-            }
+            }*/
         }
 
         // GET: CharactersController/Details/5
-        [HttpGet("{I:int}", Name = "GetByI")]
+        [HttpGet("{id}", Name = "GetByI")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Character))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetI(int I)
+        public IActionResult GetI(int id)
         {
-            Character? c = characters.CharactersL.Find(p => p.Id == I);
+            Character? c = characters.CharactersL.Find(p => p.Id == id);
             if (c == null)
             {
-                return NotFound($"Id: {I} not Found.");
+                return NotFound($"Id: {id} not Found.");
             }
             else
             {
@@ -85,10 +85,10 @@ namespace Ficha_10.Controllers
 
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Character))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
-        public IActionResult Put(int id, [FromBody] Character charact)
+        public IActionResult Put(int id, [FromBody] Character character)
         {
             var c = characters.CharactersL.Find(p => p.Id == id);
             if (c == null)
@@ -97,12 +97,12 @@ namespace Ficha_10.Controllers
             }
             else
             {
-                c.Id = charact.Id;
-                c.Name = charact.Name;
-                c.Gender = charact.Gender;
-                c.Homeworld = charact.Homeworld;
-                c.Born = charact.Born;
-                c.Jedi = charact.Jedi; 
+                c.Id = character.Id;
+                c.Name = character.Name;
+                c.Gender = character.Gender;
+                c.Homeworld = character.Homeworld;
+                c.Born = character.Born;
+                c.Jedi = character.Jedi; 
                 return Ok(c);
             }
         }
@@ -113,10 +113,10 @@ namespace Ficha_10.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetByGender(string gender)
         {
-            List<Character>? chG = characters.CharactersL.FindAll(c => c.Gender == gender);
-            if (chG.Count == 0)
+            Character? chG = characters.CharactersL.Find(c => c.Gender == gender);
+            if (chG == null)
             {
-                return NotFound(String.Format("Gender: {0} not found.", gender));
+                return NotFound($"Gender: {gender} not found.");
             }
             else
             {
@@ -129,12 +129,12 @@ namespace Ficha_10.Controllers
         [HttpGet("jedi", Name = "GetByJedi")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Character))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetByJedi()
+        public IActionResult GetByJedi(bool jedi)
         {
-            List<Character>? c = characters.CharactersL.FindAll(p => p.Jedi == true);
-            if (c.Count == 0)
+            Character? c = characters.CharactersL.Find(p => p.Jedi == true);
+            if (c == null)
             {
-                return NotFound(String.Format("Jedi: not found."));
+                return NotFound($"Jedi: {jedi} not found.");
             }
             else
             {
@@ -145,18 +145,17 @@ namespace Ficha_10.Controllers
 
         //Download
         [HttpGet("download", Name = "GetDownload")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetDownload()
         {
-            string jsonCha = JsonSerializer.Serialize<Characters>(characters);
+            //Save the current employee list to a file
+            string jsonCha = JsonSerializer.Serialize<ICharacters>(characters);
             //namespace.class.function
             System.IO.File.WriteAllText("./JsonFiles/characters.json", jsonCha);
 
             try
             {
                 byte[] bytes = System.IO.File.ReadAllBytes("./JsonFiles/characters.json");
-                return File(bytes, "aolication/json", "./JsonFiles/characters.json");
+                return File(bytes, "application/json", "characters.json");
 
             }
             catch (FileNotFoundException e)

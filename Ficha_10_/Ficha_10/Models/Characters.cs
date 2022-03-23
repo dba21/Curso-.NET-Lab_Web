@@ -1,11 +1,17 @@
 ﻿namespace Ficha_10.Models
 {
-    public class Characters
+    public class Characters : ICharacters
     {
-        public List<Character> CharactersL { get; set;}
+        private List<Character> charactersL;
+        List<Character> ICharacters.CharactersL
+        {
+            get => charactersL;
+            set => charactersL = value;
+        }
         public Characters()
         {
-            CharactersL = new List<Character>();
+            charactersL = JsonLoader.LoadCharactersJsonFiles();
         }
+
     }
 }

@@ -7,8 +7,8 @@ using System.Text.Json;
 
 namespace Ficha_10.Controllers
 {
-    [Route("[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class EmployeesController : ControllerBase
     {
         //private readonly Employees employees;
@@ -35,7 +35,7 @@ namespace Ficha_10.Controllers
 
         
         // GET Id api/<ValuesController>/5
-        [HttpGet("{id:int}", Name = "GetById")]
+        [HttpGet("{id}", Name = "GetById")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Employee))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetId(int id)
@@ -52,28 +52,24 @@ namespace Ficha_10.Controllers
         }
         
         // POST api/<ValuesController>
-        [HttpPost]
+        [HttpPost(Name = "PostEmployee")]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
         public IActionResult Post([FromBody] Employee employee)
         {
-            if (employees.EmployeesL.Count == 0)
+            if (employee != null)
             {
-                employee.UserId = 1;
                 employees.EmployeesL.Add(employee);
+                return CreatedAtRoute("GetById", new { id = employee.UserId }, employee);
             }
             else
             {
-                var lastEmp = employees.EmployeesL[employees.EmployeesL.Count - 1];
-                employee.UserId = lastEmp.UserId + 1;
-                employees.EmployeesL.Add(employee);
+                return BadRequest();
             }
-            return Created("./JsonFiles/employees.json", employee);
         }
 
-        
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -99,6 +95,7 @@ namespace Ficha_10.Controllers
             }
         }
         
+
         // DELETE api/<ValuesController>/5
         [HttpDelete("id")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -122,10 +119,10 @@ namespace Ficha_10.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetByRegion(string region)
         {
-            List<Employee>? emp = employees.EmployeesL.FindAll(e => e.Region == region);
-            if (emp.Count == 0)
+            Employee? emp = employees.EmployeesL.Find(e => e.Region == region);
+            if (emp == null)
             {
-                return NotFound(String.Format("Region: {0} not found.", region));
+                return NotFound($"Region: {region} not found!");
             }
             else
             {
@@ -140,14 +137,14 @@ namespace Ficha_10.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetByDownload()
         {
-            string jsonEmp = JsonSerializer.Serialize<Employee>((Employee)employees);
+            string jsonEmp = JsonSerializer.Serialize<IEmployees>(employees);
             //namespace.class.function
             System.IO.File.WriteAllText("./JsonFiles/employees.json", jsonEmp);
             
             try
             {
                 byte[] bytes = System.IO.File.ReadAllBytes("./JsonFiles/employees.json");
-                return File(bytes, "aplication/json", "./JsonFiles/employees.json");
+                return File(bytes, "aplication/json", "employees.json");
 
             }
             catch(FileNotFoundException e)

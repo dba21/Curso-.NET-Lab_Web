@@ -10,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IEmployees, Employees>();
+builder.Services.AddSingleton<ICharacters, Characters>();
 
 var app = builder.Build();
 

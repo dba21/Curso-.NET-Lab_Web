@@ -5,23 +5,18 @@ namespace Ficha_10
 {
     public class JsonLoader
     {
-
-        public static List<Employee>? LoadEmployeesJson()
+        public static List<Employee> LoadEmployeesJsonFiles()
         {
-            var jsonData = System.IO.File.ReadAllText("./JsonFiles/employees.json");
+            string jsonData = System.IO.File.ReadAllText("./JsonFiles/employees.json");
             return JsonSerializer.Deserialize<List<Employee>>(jsonData);
-
 
         }
 
-        public static Characters LoadCharactersJson()
+        public static List<Character> LoadCharactersJsonFiles()
         {
-            var jsonC = File.ReadAllText("./JsonFiles/characters.json");
-            Characters? cs = JsonSerializer.Deserialize<Characters>(jsonC);
-            return cs;
-
-            string json = JsonSerializer.Serialize<Characters>(cs);
-            File.WriteAllText("./JsonFiles/characters.json", json);
+            string jsonC = System.IO.File.ReadAllText("./JsonFiles/characters.json");
+            return JsonSerializer.Deserialize<List<Character>>(jsonC);
+            
         }
     }
 }

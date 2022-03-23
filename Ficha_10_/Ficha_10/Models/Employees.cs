@@ -12,7 +12,7 @@
 
         public Employees()
         {
-            employeesL = JsonLoader.LoadEmployeesJson();
+            employeesL = JsonLoader.LoadEmployeesJsonFiles();
         }
     }
 }
