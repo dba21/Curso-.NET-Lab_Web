@@ -1,0 +1,19 @@
+﻿@model Ficha14.Models.UserViewModel
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<div class="text-center">
+    <h1> Welcome</h1>
+
+    <h2>User Detalis</h2>
+
+    <address>
+        <br> ID: @Model.ID </br>
+        <br> User: @Model.UserName </br>
+        <br> Email: @Model.Email </br>
+        <br> Role: @Model.Role </br>
+        <br> Token: @ViewData["Token"]</br>
+    </address>
+</div>
