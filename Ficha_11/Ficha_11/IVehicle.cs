@@ -8,7 +8,7 @@ namespace Ficha_11
 {
     public interface IVehicle
     {
-        public Drive()
+        void Drive()
         {
 
         }

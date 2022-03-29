@@ -8,30 +8,29 @@ namespace Ficha_11
 {
     public class Car : Vehicle
     {
-        private int doors;
-        private int seats;
+        private int numberOfDoors;
+        private int numberOfSeats;
 
-        public Car()
+        public Car(int numberOfDoors, int numberOfSeats, string brand, Engine engine,
+            Travel travel) : base(brand, engine, travel)
         {
-            this.doors = 0;
-            this.seats = 0;
+            this.numberOfDoors = 0;
+            this.numberOfSeats = 0;
         }
 
-        public Car(int doors, int seats)
-        {
-            this.doors = doors;
-            this.seats = seats;
-        }
         public override string ToString()
         {
             string str = "";
 
-            str += "Number of doors: " + doors + ", ";
-            str += ", places: " + seats + " .";
+            str += "Number of doors: " + numberOfDoors + ", ";
+            str += ", places: " + numberOfSeats + " .";
 
             return str;
         }
 
-        public abstract void Start();
+        public override void Start()
+        {
+
+        }
     }
 }

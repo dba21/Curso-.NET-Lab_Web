@@ -15,8 +15,5 @@ namespace Ficha_11
         {
             this.vehicle = vehicle;
         }
-
-
-
     }
 }

@@ -7,7 +7,7 @@ namespace Ficha_12.Data
         
         public static void CreateDbIfNotExists(this IHost host)
         {
-            {
+            
                 using (var scope = host.Services.CreateScope())
                 {
                     var services = scope.ServiceProvider;
@@ -18,7 +18,7 @@ namespace Ficha_12.Data
                         LibraryDBInitializer.InsertData(context);
                     }
                 }
-            }
+            
         }
     }
 }

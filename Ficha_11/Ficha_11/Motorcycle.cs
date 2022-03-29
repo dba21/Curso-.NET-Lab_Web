@@ -8,6 +8,11 @@ namespace Ficha_11
 {
     public class Motorcycle : Vehicle
     {
+        public override void Start()
+        {
+            throw new NotImplementedException();
+        }
+
         public enum Models
         {
             SPORT,
@@ -15,12 +20,14 @@ namespace Ficha_11
             ADVENTURE,
         }
 
-        protected int topSpeed;
+        private int topSpeed;
 
-        public Motorcycle(int topSpeed)
+        public Motorcycle(Travel travel, string color, string weight, string brand, string model, Engine engine) : 
+            base(travel, color, weight, brand, model, engine)
         {
-            this.topSpeed = topSpeed;
+            
         }
+
         public override string ToString()
         {
             string str = "";
